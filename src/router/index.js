@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import Admin from '../views/Admin.vue'
+import UserManagement from '../views/UserManagement.vue'
+import BranchManagement from '../views/BranchManagement.vue'
+import InventoryManagement from '../views/InventoryManagement.vue'
 
 
 const routes = [
@@ -13,6 +16,21 @@ const routes = [
     path: '/admin',
     name: 'admin',
     component: Admin
+  },
+  {
+    path: '/BranchManage',
+    name: 'BranchManage',
+    component: BranchManagement
+  },
+  {
+    path: '/UserManage',
+    name: 'UserManage',
+    component: UserManagement
+  },
+  {
+    path: '/InventoryManage',
+    name: 'InventoryManage',
+    component: InventoryManagement
   },
   {
     path: '/about',
