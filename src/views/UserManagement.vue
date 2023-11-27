@@ -1,58 +1,109 @@
 <template>
-    <v-container>
-      <v-form @submit.prevent="createUser">
-        <v-row>
-          <v-col cols="12" md="6">
-            <v-text-field v-model="user.name" label="Name" required></v-text-field>
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-text-field v-model="user.email" label="Email" required></v-text-field>
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-text-field v-model="user.contact" label="Contact" required></v-text-field>
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-text-field v-model="user.password" label="Password" type="password" required></v-text-field>
-          </v-col>
-        </v-row>
-        <v-btn type="submit" color="primary">Create User</v-btn>
-      </v-form>
-    </v-container>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        user: {
-          name: '',
-          email: '',
-          contact: '',
-          password: ''
-        }
-      };
-    },
-    methods: {
-      createUser() {
-        // You can implement the logic to create the user account here
-        console.log('Creating user:', this.user);
+  <v-container>
+    <!-- Create User Accounts -->
+    <v-card>
+      <v-card-title>Create User Accounts</v-card-title>
+      <v-card-text>
+        <v-form @submit.prevent="createUser">
+          <v-text-field v-model="newUser.name" label="Name"></v-text-field>
+          <v-text-field v-model="newUser.email" label="Email"></v-text-field>
+          <v-text-field v-model="newUser.password" label="Password" type="password"></v-text-field>
+          <v-select v-model="newUser.role" :items="roles" label="Role"></v-select>
+          <v-btn type="submit" color="primary">Create User</v-btn>
+        </v-form>
+      </v-card-text>
+    </v-card>
+
+    <!-- Update User Accounts -->
+    <v-card>
+      <v-card-title>Update User Accounts</v-card-title>
+      <v-card-text>
+        <v-select v-model="selectedUserId" :items="userList" label="Select User"></v-select>
+        <v-form @submit.prevent="updateUser">
+          <v-text-field v-model="selectedUser.name" label="Name"></v-text-field>
+          <v-text-field v-model="selectedUser.email" label="Email"></v-text-field>
+          <v-text-field v-model="selectedUser.password" label="Password" type="password"></v-text-field>
+          <v-btn type="submit" color="primary">Update User</v-btn>
+        </v-form>
+      </v-card-text>
+    </v-card>
+
+    <!-- Delete User Accounts -->
+    <v-card>
+      <v-card-title>Delete User Accounts</v-card-title>
+      <v-card-text>
+        <v-checkbox v-model="selectAll" @change="toggleSelectAll">Select All</v-checkbox>
         
-        // After creating the user, you may want to reset the form
-        this.resetForm();
+        <!-- User Data Table -->
+        <v-data-table
+          :headers="headers"
+          :items="userList"
+          :select-all="selectAll"
+          item-key="id"
+          v-model="selectedUsers"
+          show-select
+        >
+          <template v-slot:top>
+            <v-btn @click="deleteUsers" color="error">Delete Selected Users</v-btn>
+          </template>
+        </v-data-table>
+      </v-card-text>
+    </v-card>
+  </v-container>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      newUser: {
+        name: '',
+        email: '',
+        password: '',
+        role: '',
       },
-      resetForm() {
-        this.user = {
-          name: '',
-          email: '',
-          contact: '',
-          password: ''
-        };
+      selectedUserId: null,
+      selectedUser: {
+        name: '',
+        email: '',
+        password: '',
+      },
+      userList: [
+        // Populate this array with your existing user data
+      ],
+      roles: ['customer', 'staff', 'admin'],
+      selectedUsers: [],
+      selectAll: false,
+
+      // Data table headers
+      headers: [
+        { text: 'Name', value: 'name' },
+        { text: 'Email', value: 'email' },
+        { text: 'Role', value: 'role' },
+      ],
+    };
+  },
+  methods: {
+    createUser() {
+      // Implement logic to create a new user
+      console.log('Creating user:', this.newUser);
+    },
+    updateUser() {
+      // Implement logic to update the selected user
+      console.log('Updating user:', this.selectedUser);
+    },
+    deleteUsers() {
+      // Implement logic to delete selected users
+      console.log('Deleting users:', this.selectedUsers);
+    },
+    toggleSelectAll() {
+      // Toggle select all checkbox
+      if (this.selectAll) {
+        this.selectedUsers = [...this.userList.map(user => user.id)];
+      } else {
+        this.selectedUsers = [];
       }
-    }
-  };
-  </script>
-  
-  <style scoped>
-  /* Add your custom styles here if needed */
-  </style>
-  
+    },
+  },
+};
+</script>
