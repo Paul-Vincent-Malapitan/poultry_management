@@ -1,43 +1,49 @@
 <template>
-    <v-app-bar :elevation="2"></v-app-bar>
     <v-card>
-      <v-layout>
-        <v-navigation-drawer expand-on-hover rail>
-          <v-list>
-            <v-list-item
-              prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-              title="Paul Vinzent"
-              subtitle="paul.vinzent@gmail.com"
-            ></v-list-item>
-          </v-list>
-          <v-divider></v-divider>
-          <v-list density="compact" nav>
-            <v-list-item
-              @click="loadComponent('UserManagement')"
-              prepend-icon="mdi-account-group"
-              title="User Management"
-            ></v-list-item>
-            <v-list-item
-              @click="loadComponent('BranchManagement')"
-              prepend-icon="mdi-domain"
-              title="Branch Management"
-            ></v-list-item>
-            <v-list-item
-              @click="loadComponent('InventoryManagement')"
-              prepend-icon="mdi-archive"
-              title="Inventory Management"
-            ></v-list-item>
+      <v-app-bar app color="primary">
+        <v-app-bar-nav-icon></v-app-bar-nav-icon>
   
-            <!-- Logout button in the navigation drawer -->
-            <v-list-item @click="logout" prepend-icon="mdi-logout" title="Logout"></v-list-item>
-          </v-list>
-        </v-navigation-drawer>
+        <v-container>
+          <v-row justify="start">
+            <v-col>
+              <v-toolbar-title class="mr-4" style="color: white;">Your Dashboard</v-toolbar-title>
+            </v-col>
+          </v-row>
+        </v-container>
   
-        <v-main style="height: 800px;">
-          <!-- Dynamic component rendering based on the selected option -->
-          <component :is="selectedComponent"></component>
-        </v-main>
-      </v-layout>
+        <v-spacer></v-spacer>
+  
+        <v-container>
+          <v-row justify="center">
+            <v-tabs v-model="tab" align-tabs="center">
+              <v-tab v-for="item in items" :key="item" :value="item">
+                {{ item }}
+              </v-tab>
+            </v-tabs>
+          </v-row>
+        </v-container>
+  
+        <v-btn icon>
+          <v-icon>mdi-magnify</v-icon>
+        </v-btn>
+  
+        <v-btn icon>
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
+      </v-app-bar>
+  
+      <v-container>
+        <v-row justify="center">
+          <v-col cols="12" sm="8" md="6" lg="4">
+            <v-window v-model="tab">
+              <v-window-item v-for="item in items" :key="item" :value="item">
+                <!-- Display dynamic components below based on the selected option -->
+                <component :is="getComponent(item)"></component>
+              </v-window-item>
+            </v-window>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-card>
   </template>
   
@@ -49,28 +55,23 @@
   export default {
     data() {
       return {
-        selectedComponent: null,
+        tab: null,
+        items: ['User Management', 'Branch Management', 'Inventory Management'],
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       };
     },
     methods: {
-      logout() {
-        // Add your logout logic here
-        // For example, you might use a Vuex action to handle the logout process
-      },
-      loadComponent(componentName) {
-        // Dynamically load the component based on the selected option
-        switch (componentName) {
-          case "UserManagement":
-            this.selectedComponent = UserManagement;
-            break;
-          case "BranchManagement":
-            this.selectedComponent = BranchManagement;
-            break;
-          case "InventoryManagement":
-            this.selectedComponent = InventoryManagement;
-            break;
+      getComponent(item) {
+        // Map the item to the corresponding component
+        switch (item) {
+          case 'User Management':
+            return UserManagement;
+          case 'Branch Management':
+            return BranchManagement;
+          case 'Inventory Management':
+            return InventoryManagement;
           default:
-            this.selectedComponent = null;
+            return null;
         }
       },
     },

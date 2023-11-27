@@ -4,6 +4,7 @@ import Admin from '../views/Admin.vue'
 import UserManagement from '../views/UserManagement.vue'
 import BranchManagement from '../views/BranchManagement.vue'
 import InventoryManagement from '../views/InventoryManagement.vue'
+import Side from '../views/Side.vue'
 
 
 const routes = [
@@ -31,6 +32,11 @@ const routes = [
     path: '/InventoryManage',
     name: 'InventoryManage',
     component: InventoryManagement
+  },
+  {
+    path: '/Side',
+    name: 'Side',
+    component: Side
   },
   {
     path: '/about',
